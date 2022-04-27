@@ -98,10 +98,15 @@ Following are the high-level steps for setting up the demo application:
     curl -X POST https://<Your-Site-Name>.azurewebsites.net/api/Configs/Customer/Order -H 'Content-Type: application/json' -d '{ "Date" : "2022-04-14", "OrderId" : 1, "TenantId" : "Alpha", "OrderDetail" : "Create Alpha Work Order" }'
     ```
 
-    Response should be:
+    Response should be for Alpha tenant:
 
-    ```bash
-    {"status":"Submitted for customer id : 101","orderDetail":"Create Alpha Work Order","customerName":"Customer Alpha","connectionString":"Server=ABC,1433;InitialCatalog=AlphaDatabase;UsingKeyVault=true"}
+    ```json
+    {
+        "status": "Submitted for customer id : 101",
+        "orderDetail": "Create Alpha Work Order",
+        "customerName": "Customer Alpha",
+        "connectionString": "Server=ABC,1433;InitialCatalog=AlphaDatabase;UsingKeyVault=true"
+    }
     ```
 
     1. Bravo tenant request
@@ -110,8 +115,13 @@ Following are the high-level steps for setting up the demo application:
     curl -X POST https://<Your-Site-Name>.azurewebsites.net/api/Configs/Customer/Order -H 'Content-Type: application/json' -d '{ "Date" : "2022-04-14", "OrderId" : 1, "TenantId" : "Bravo", "OrderDetail" : "Create Bravo Work Order" }'
     ```
 
-    Response should be:
+    Response should be for Bravo tenant:
 
-    ```bash
-    {"status":"Submitted for customer id : 102","orderDetail":"Create Bravo Work Order","customerName":"Customer Bravo","connectionString":"Server=ABC,1433;InitialCatalog=BravoDatabase;UsingKeyVault=true"}
+    ```json
+    {
+        "status": "Submitted for customer id : 102",
+        "orderDetail": "Create Bravo Work Order",
+        "customerName": "Customer Bravo",
+        "connectionString": "Server=ABC,1433;InitialCatalog=BravoDatabase;UsingKeyVault=true"
+    }
     ```
