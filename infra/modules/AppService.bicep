@@ -1,8 +1,7 @@
 param webAppName string = uniqueString(resourceGroup().id) // Generate unique String for web app name
 param sku string = 'S1' // The SKU of App Service Plan
 param location string = resourceGroup().location // Location for all resources
-param repositoryUrl string = 'https://github.com/fsaleemm/Multi-Tenant-WebAPI.git'
-param branch string = 'main'
+
 var appServicePlanName = toLower('ASP-${webAppName}')
 var webSiteName = toLower('wapi-${webAppName}')
 
@@ -43,13 +42,6 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
   }
 }
 
-resource srcControls 'Microsoft.Web/sites/sourcecontrols@2021-01-01' = {
-  name: '${appService.name}/web'
-  properties: {
-    repoUrl: repositoryUrl
-    branch: branch
-    isManualIntegration: true
-  }
-}
+
 
 output appServiceName string = appService.name

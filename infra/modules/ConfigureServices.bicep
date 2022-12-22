@@ -3,6 +3,9 @@ param appServiceName string
 param configStoreName string
 param keyVaultName string
 
+param repositoryUrl string = 'https://github.com/fsaleemm/Multi-Tenant-WebAPI.git'
+param branch string = 'main'
+
 resource appServiceInstance 'Microsoft.Web/sites@2020-06-01' existing = {
   name: appServiceName
 }
@@ -141,5 +144,14 @@ resource connectionString 'Microsoft.Web/sites/config@2020-06-01' = {
       value: '@Microsoft.KeyVault(VaultName=${keyVaultName};SecretName=AppConfigConnectionString)'
       type: 'Custom'
     }
+  }
+}
+
+resource srcControls 'Microsoft.Web/sites/sourcecontrols@2021-01-01' = {
+  name: '${appServiceInstance.name}/web'
+  properties: {
+    repoUrl: repositoryUrl
+    branch: branch
+    isManualIntegration: true
   }
 }
