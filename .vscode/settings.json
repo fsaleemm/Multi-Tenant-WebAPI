@@ -1,4 +1,0 @@
-{
-    "appService.defaultWebAppToDeploy": "/subscriptions/5af62daa-cc37-4c32-93c2-8a5fef11d72a/resourceGroups/rg-appConfig/providers/Microsoft.Web/sites/app-f4t-apitest-dev01",
-    "appService.deploySubpath": "Multi-Tenant-WebAPI"
-}
