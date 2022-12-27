@@ -59,36 +59,23 @@ Following are the high-level steps for setting up the demo application:
 
 ### Setup Azure Services
 
-1. Create a resource group
+1. Deploy demo by running the below steps.
 
     ```bash
-    az login # Login via browser
-    az group create -n "<Your Resource Group Name>" -l "<Your Resource Location>"
+    # Optional if already logged in
+    az login
+
+    # Check to deploy to correct subscription
+    az account show
+
+    git clone https://github.com/fsaleemm/Multi-Tenant-WebAPI.git
+
+    cd Multi-Tenant-WebAPI
+
+    az deployment sub create --name "<unique deployment name>" --location "<Your Chosen Location>" --template-file infra/main.bicep --parameters name="<Name suffix for resources>"
+
     ```
 
-1. Setup the Azure App Service (this may take a few minutes)
-
-    ```bash
-    az deployment group create --resource-group "<Your Resource Group Name>" --template-file deploy/AppService.bicep
-    ```
-
-1. Setup Azure App Configuration Service (this may take a few minutes)
-
-    ```bash
-    az deployment group create --resource-group "<Your Resource Group Name>" --template-file deploy/AppConfigurationService.bicep
-    ```
-
-1. Setup Azure Key Vault
-
-    ```bash
-    az deployment group create --resource-group "<Your Resource Group Name>" --template-file deploy/KeyVault.bicep
-    ```
-
-1. Configure the Azure Services, set up Key Vault secrets, access policies, etc.
-
-    ```bash
-    az deployment group create --resource-group "<Your Resource Group Name>" --template-file deploy/ConfigureServices.bicep
-    ```
 
 1. Test the deployed API by sending requests simulating different tenants.
 
@@ -97,8 +84,12 @@ Following are the high-level steps for setting up the demo application:
     ```bash
     curl -X POST https://<Your-Site-Name>.azurewebsites.net/api/Configs/Customer/Order -H 'Content-Type: application/json' -d '{ "Date" : "2022-04-14", "OrderId" : 1, "TenantId" : "Alpha", "OrderDetail" : "Create Alpha Work Order" }'
     ```
+    if using PowerShell use the following:
+    ```PowerShell
+    (Invoke-WebRequest -Uri "https://<Your-Site-Name>.azurewebsites.net/api/Configs/Customer/Order" -Headers @{'Content-Type' = 'application/json'} -Method 'POST' -Body '{ "Date" : "2022-04-14", "OrderId" : 1, "TenantId" : "Alpha", "OrderDetail" : "Create Alpha Work Order" }').Content
+    ```
 
-    Response should be for Alpha tenant:
+    Response "connectionString" should be for Alpha tenant:
 
     ```json
     {
@@ -115,7 +106,7 @@ Following are the high-level steps for setting up the demo application:
     curl -X POST https://<Your-Site-Name>.azurewebsites.net/api/Configs/Customer/Order -H 'Content-Type: application/json' -d '{ "Date" : "2022-04-14", "OrderId" : 1, "TenantId" : "Bravo", "OrderDetail" : "Create Bravo Work Order" }'
     ```
 
-    Response should be for Bravo tenant:
+    Response "connectionString" should be for Bravo tenant:
 
     ```json
     {
@@ -125,3 +116,7 @@ Following are the high-level steps for setting up the demo application:
         "connectionString": "Server=ABC,1433;InitialCatalog=BravoDatabase;UsingKeyVault=true"
     }
     ```
+
+## Disclaimer
+
+The code and deployment biceps are for demonstration purposes only.
